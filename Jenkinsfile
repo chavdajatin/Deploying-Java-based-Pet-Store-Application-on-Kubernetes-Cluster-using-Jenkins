@@ -12,7 +12,7 @@ pipeline{
         }
         stage ('checkout scm') {
             steps {
-                git 'https://github.com/iamsaikishore/Deploying-Java-based-Pet-Store-Application-on-Kubernetes-Cluster-using-Jenkins.git'
+                git branch: 'main', url: 'https://github.com/iamsaikishore/Deploying-Java-based-Pet-Store-Application-on-Kubernetes-Cluster-using-Jenkins.git'
             }
         }
         stage ('maven compile') {
