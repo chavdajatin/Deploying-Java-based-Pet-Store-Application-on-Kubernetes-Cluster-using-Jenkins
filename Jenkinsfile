@@ -61,7 +61,7 @@ pipeline{
                 script{
                     withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
                         sh "docker build -t petstore ."
-                        sh "docker tag petshop iamsaikishore/petstore:latest"
+                        sh "docker tag petstore iamsaikishore/petstore:latest"
                         sh "docker push iamsaikishore/petstore:latest"
                    }
                 }
