@@ -45,6 +45,11 @@ pipeline{
                 }
            }
         }
+	stage ('Removing existing petstore container'){
+	    steps{
+		sh './docker-rm.sh'
+	    }
+	}
         stage ('Build war file'){
             steps{
                 sh 'mvn clean install -DskipTests=true'
