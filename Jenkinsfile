@@ -56,6 +56,28 @@ pipeline{
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
+	stage ('Build and push to docker hub'){
+            steps{
+                script{
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                        sh "docker build -t petstore ."
+                        sh "docker tag petshop iamsaikishore/petstore:latest"
+                        sh "docker push iamsaikishore/petstore:latest"
+                   }
+                }
+            }
+        }
+        stage("TRIVY"){
+            steps{
+                sh "trivy image iamsaikishore/petstore:latest > trivy.txt"
+            }
+        }
+        stage ('Deploy to container'){
+            steps{
+                sh 'docker run -d --name petstore -p 8080:8080 iamsaikishore/petstore:latest'
+            }
+        }
+
    }
 }
 
