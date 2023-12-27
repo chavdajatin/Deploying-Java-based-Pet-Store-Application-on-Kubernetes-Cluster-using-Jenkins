@@ -63,8 +63,8 @@ pipeline{
                         sh "docker build -t petstore ."
                         sh "docker tag petstore iamsaikishore/petstore:latest"
 			sh "docker tag petstore iamsaikishore/petstore:v1.${env.BUILD_NUMBER}"
-                        sh "docker push iamsaikishore/petstore:latest"
-			sh "docker push iamsaikishore/petstore:v1.${env.BUILD_NUMBER}"
+                        sh "docker push iamsaikishore/petstore:v1.${env.BUILD_NUMBER}"
+			sh "docker push iamsaikishore/petstore:latest"
                    }
                 }
             }
