@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petstore
+spec:
+  selector:
+    matchLabels:
+      app: petstore
+  replicas: 2
+  template: 
+    metadata:
+      labels:
+        app: petstore
+    spec:
+      containers:
+      - name: petstore
+        image: iamsaikishore/petstore:latest
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: petstore
+spec:
+  type: LoadBalancer
+  selector:
+    app: petstore
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8080
