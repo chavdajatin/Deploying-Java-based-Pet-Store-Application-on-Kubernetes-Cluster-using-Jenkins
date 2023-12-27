@@ -1,0 +1,41 @@
+pipeline{
+    agent any
+    stages{
+        stage ('clean Workspace'){
+            steps{
+                cleanWs()
+            }
+        }
+        stage ('checkout scm') {
+            steps {
+                git branch: 'main', url: 'https://github.com/iamsaikishore/Deploying-Java-based-Pet-Store-Application-on-Kubernetes-Cluster-using-Jenkins.git'
+            }
+        }
+        stage ('Deploy to container'){
+            steps{
+		            sh 'docker run -d --name petstore -p 8080:8080 iamsaikishore/petstore:latest'
+	          }
+        }
+	      stage('K8s'){
+            steps{
+                script{
+                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                        sh 'kubectl apply -f deployment.yaml'
+                    }
+                }
+            }
+        }
+
+    }
+    post {
+     always {
+        emailext attachLog: true,
+            subject: "'${currentBuild.result}'",
+            body: "Project: ${env.JOB_NAME}<br/>" +
+                "Build Number: ${env.BUILD_NUMBER}<br/>" +
+                "URL: ${env.BUILD_URL}<br/>",
+            to: 'kishore.ds0194@gmail.com',
+            attachmentsPattern: 'trivy.txt'
+        }
+    }
+}
